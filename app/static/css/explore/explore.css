@@ -1,0 +1,14 @@
+.screenshot {
+    width: 256px;
+}
+
+.screenshot-card {
+    width: calc(257px + 0rem);
+}
+
+@media (max-width: 576px) {
+    .wrapper {
+        justify-content: center;
+        display: flex;
+    }
+}

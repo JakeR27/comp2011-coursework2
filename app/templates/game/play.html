@@ -1,0 +1,153 @@
+{% extends "basic_center.html" %}
+{% block centered_content %}
+
+    <div class="text-center" id="top-div">
+        <h1>Farmanina!</h1>
+        <p class="lead">Let's take a look at <b>{{ user_settings.name }}'s</b> zoo!</p>
+    </div>
+
+{% endblock %}
+{% block noncentered_content %}
+    <div class="row justify-content-center row-cols-sm-1 row-cols-xl-3">
+        <div class="col-sm-4 order-sm-1">
+            <div class="justify-content-center d-flex mb-3">
+                <div class="canvas-container justify-content-center d-flex">
+                    <canvas id="gameCanvas" class="d-flex canvas" style="border: 1px solid black" role="img" aria-label="Zoo Image" >Zoo Image</canvas>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-none d-md-block"></div>
+        <div class="col order-sm-2">
+            <div class="justify-content-center d-flex">
+                <div class="canvas-container justify-content-center d-flex">
+                    <div class="alert alert-info canvas">
+                        <div id="product-list" class="row">
+                            <div class="row mb-3 text-center">
+                                <div class="col"><b>Product</b></div>
+                                <div class="col"><b>Quantity</b></div>
+                                <div class="col"><b>Value</b></div>
+                                <div class="col"><b></b></div>
+                            </div>
+                            <hr>
+                            {% for prod in products %}
+                                <div class="row mb-1 text-center">
+                                    <div class="col">{{ prod[0] }}</div>
+                                    <div class="col" id="{{ prod[0]}}-quantity">{{ prod[1] }}</div>
+                                    <div class="col">{{ prod[2] }}</div>
+                                    {% set sell_price = prod[1] * prod[2] %}
+                                    {% if sell_price %}
+                                        <div class="col"><button id="{{ prod[0]}}-btn1" class="btn btn-danger sell-btn" onclick="sell('{{ prod[0] }}', -1)">Sell for {{ sell_price }}</button></div>
+                                    {% else %}
+                                        <div class="col sell-btn"><button id="{{ prod[0]}}-btn1" class="btn btn-danger sell-btn" disabled>
+                                            Sell
+                                            <span class="tooltip">You don't have enough "{{ prod[0] }}" to sell!</span>
+                                        </button></div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <div class="row justify-content-center">
+                                <div class="col mx-5 d-flex justify-content-center">
+                                    <button class="btn btn-success d-flex" onclick="refreshProducts()">Collect products&nbsp;<span id="refresh-ctr">in 60s</span><i class="ms-2 bi bi-arrow-clockwise"></i></button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-none d-md-block"></div>
+        <div class="col order-sm-0">
+            <div class="justify-content-center d-flex">
+                <div class="canvas-container justify-content-center d-flex">
+                    <div class="alert alert-info canvas">
+                        <div id="product-list" class="row">
+                        <div class="row mb-3 text-center">
+                            <div class="col"><b>Animal</b></div>
+                            <div class="col"><b>Quantity</b></div>
+                            <div class="col"><b>Value</b></div>
+                            <div class="col"><b></b></div>
+                            <div class="col"><b></b></div>
+                        </div>
+                        <hr>
+                        {% for prod in animals %}
+                            <div class="row mb-1 text-center">
+                                <div class="col">{{ prod[0] }}</div>
+                                <div class="col" id="{{ prod[0]}}-quantity">{{ prod[1] }}</div>
+                                <div class="col">{{ prod[2] }}</div>
+                                {% set sell_price = prod[1] * prod[2] %}
+                                {% if sell_price %}
+                                    <div class="col"><button id="{{ prod[0]}}-btn1" class="btn btn-danger sell-btn" onclick="sell('{{ prod[0] }}', 1)">Sell 1{#  @ {{ prod[2] }} #}</button></div>
+                                    <div class="col"><button id="{{ prod[0]}}-btn2" class="btn btn-danger sell-btn" onclick="sell('{{ prod[0] }}', -1)">Sell all{# @ {{ sell_price }} #} </button></div>
+                                {% else %}
+                                    <div class="col sell-btn"><button class="btn btn-danger sell-btn" disabled id="{{ prod[0]}}-btn1">
+                                        Sell
+                                        <span class="tooltip">You don't have enough "{{ prod[0] }}" to sell!</span>
+                                    </button></div>
+                                    <div class="col sell-btn"><button class="btn btn-danger sell-btn" disabled id="{{ prod[0]}}-btn2">
+                                        Sell
+                                        <span class="tooltip">You don't have enough "{{ prod[0] }}" to sell!</span>
+                                    </button></div>
+                                {% endif %}
+
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container justify-content-center d-flex">
+        <div class="canvas-container justify-content-center d-flex">
+            <div class="alert alert-info canvas">
+{#                <form action="" id="input-form" method="post">#}
+                    {{ form.hidden_tag() }}
+                    <div class="row row-cols-4 ">
+                        <div class="col">
+                            {{ form.animal.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col">
+                            {{ form.quantity.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col">
+                            {{ form.command.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col">
+                            Sharing
+                        </div>
+                        <div class="col">
+                            {{ form.animal(class_="form-control") }}
+                        </div>
+                        <div class="col">
+                            {{ form.quantity(class_="form-control",pattern="[0-9]*",inputmode="numeric") }}
+                        </div>
+                        <div class="col">
+                            <button onclick="buyPressed()" class="btn btn-primary">Order</button>
+                        </div>
+                        <div class="col">
+                            <button onclick="screenshotCanvas()" class="btn btn-primary">Publish</button>
+                        </div>
+                    </div>
+
+{#                </form>#}
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/play/canvas.js"></script>
+    <script src="/static/js/p5.min.js"></script>
+
+    <script src="/static/js/play/game.js"></script>
+    <script src="/static/js/play/animals.js"></script>
+    <script src="/static/js/play/connection.js"></script>
+    <script src="/static/js/play/moneyManager.js"></script>
+    <script src="/static/js/play/dom_handler.js"></script>
+
+
+
+
+{% endblock %}

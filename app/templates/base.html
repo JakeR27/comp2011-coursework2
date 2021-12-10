@@ -1,0 +1,21 @@
+{# Arguments required for this template #}
+{# title:-  str,    sets the page's title #}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% if title %}
+        <title>{{ title }}</title>
+        {% else %}
+        <title>TITLE</title>
+        {% endif %}
+        {% include "styles.html" %}
+        <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+
+    </head>
+    <body>
+        {% include "navbar.html" %}
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

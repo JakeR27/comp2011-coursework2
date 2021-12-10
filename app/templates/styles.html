@@ -1,0 +1,29 @@
+{# Arguments required for this template #}
+{# custom_css:- str,    defines page specific css file to use, if any #}
+{# theme:-      str,    determines which theme is rendered, light or dark #}
+{# dev:-        bool,   enables some outlines etc for debugging #}
+
+
+<link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+{% if custom_css %}
+    <link rel="stylesheet" href="/static/css/{{ custom_css }}.css">
+{% endif %}
+
+{% if user_settings.theme %}
+    <link rel="stylesheet" href="/static/css/{{ user_settings.theme }}.css">
+{% else %}
+    <link rel="stylesheet" href="/static/css/light.css">
+{% endif %}
+
+{% if dev %}
+    <link rel="stylesheet" href="/static/css/dev.css">
+{% endif %}
+
+{% set icon = "placeholder" %}
+
+<link rel="icon" type="image/png" href="/static/media/icon/{{ icon }}-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/static/media/icon/{{ icon }}-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/static/media/icon/{{ icon }}-96x96.png" sizes="96x96">

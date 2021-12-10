@@ -1,0 +1,14 @@
+{% extends "basic_center.html" %}
+{% block centered_content %}
+
+    <div class="text-center">
+        <h1>Logout!</h1>
+            <div class="alert alert-success">
+                <p class="lead">You have successfully logged out</p>
+                <p>You will be redirected to the home page in <b><span id="counter">5</span> seconds</b>... or click <a href="/">here</a></p>
+            </div>
+    </div>
+
+    <script src="/static/js/logout_success.js"></script>
+
+{% endblock %}

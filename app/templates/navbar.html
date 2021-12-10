@@ -1,0 +1,64 @@
+{% if user_settings.theme == "dark" %}
+    {% set theme = "dark" %}
+    {% set bg = " bg-dark" %}
+{% else %}
+    {% set theme = "light" %}
+    {% set bg = " bg-light" %}
+{#    {% set bg = "\" style=\"background-color:#f0f0f0" %}#}
+{% endif %}
+
+{% if current_path == "/play" %}
+    {% set play = "" %}
+    {% set explore = "-outline" %}
+    {% set help = "-outline" %}
+{% elif current_path == "/explore" %}
+    {% set play = "-outline" %}
+    {% set explore = "" %}
+    {% set help = "-outline" %}
+{% elif current_path == "/help" %}
+    {% set play = "-outline" %}
+    {% set explore = "-outline" %}
+    {% set help = "" %}
+{% else %}
+    {% set play = "-outline" %}
+    {% set explore = "-outline" %}
+    {% set help = "-outline" %}
+{% endif %}
+
+
+<nav class="shadow-sm navbar navbar-expand-lg navbar-{{ theme }}{{ bg }} mb-2">
+    <div class="container">
+{#    <a class="navbar-brand" href="#">App</a>#}
+    <div class="" id="navbarSupportedContent" style="display: flex !important; flex-basis: auto; flex-grow: 1">
+        <ul class="navbar-nav me-auto mb-0 " style="flex-direction: row !important;">
+
+            <li class="nav-item me-2">
+                <a class="btn btn{{ play }}-success" aria-current="page" href="/play">Play</a>
+            </li>
+            <li class="nav-item me-2">
+                <a class="btn btn{{ explore }}-info" href="/explore">Explore</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn{{ help }}-danger" href="/help">Help</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav" style="flex-direction: row !important;">
+            {% if user.is_authenticated %}
+            <li class="nav-item me-2">
+                <a href="/settings" class="btn btn-info">Settings</a>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" class="btn btn-danger">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item me-2">
+                <a href="/login" class="btn btn-primary">Login</a>
+            </li>
+            <li class="nav-item">
+                <a href="/register" class="btn btn-secondary">Register</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    </div>
+</nav>

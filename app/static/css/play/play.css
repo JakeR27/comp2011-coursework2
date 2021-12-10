@@ -1,0 +1,40 @@
+.canvas-container {
+    width: var(--break-sm);
+}
+
+@media (max-width: var(--break-sm)) {
+    .canvas-container {
+        width: 100%;
+    }
+}
+
+.canvas {
+    width: 100%;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.sell-btn .tooltip {
+    visibility: hidden;
+    width: 160px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 1px;
+    left: 70%;
+}
+
+.sell-btn:hover .tooltip{
+    visibility: visible;
+    opacity: 1;
+}

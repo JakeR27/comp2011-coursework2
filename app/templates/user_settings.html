@@ -1,0 +1,72 @@
+{# Arguments required for this template #}
+{# form:-   object, contains form entry fields #}
+
+{% extends "basic_center.html" %}
+{% block centered_content %}
+
+    <div class="mb-5">
+        <div class="d-flex justify-content-center">
+            <h1>Page title!</h1>
+        </div>
+
+    </div>
+
+    <div class="mb-5">
+        <div class="d-flex justify-content-center">
+            <div class="alert alert-info px-5">
+                <div class="mb-3 d-flex justify-content-center">
+                    <h1>Settings</h1>
+                </div>
+                <form class="" action="" method="post" name="settings_form">
+                    <div class="row g-3 mb-3 ">
+                        <div class="col-1 flex-grow-1">
+{#                            {{ form.name.label(class_="col-form-label") }}#}
+                            <label for="username" class="col-form-label">Username</label>
+                        </div>
+                        <div class="col-auto">
+{#                            {{ form.name(class_="form-control") }}#}
+                            <input type="text" class="form-control" value="{{ user.username }}" disabled aria-disabled="true">
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3 ">
+                        <div class="col-1 flex-grow-1">
+                            {{ form.name.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form.name(class_="form-control") }}
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3 ">
+                        <div class="col-1 flex-grow-1">
+                            {{ form.theme.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form.theme(class_="form-control") }}
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3 ">
+                        <div class="col-1 flex-grow-1">
+{#                            {{ form.theme.label(class_="col-form-label") }}#}
+                            <p class="col-form-label">Password</p>
+                        </div>
+                        <div class="col-auto">
+                            <a href="/changepassword" class="btn btn-warning">Change password</a>
+                        </div>
+
+                    </div>
+                    <div class="mb-1 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+
+                    <div class=" d-flex justify-content-center">
+                        <p class="mb-0"><small>Changed your mind? Click <a href="/">here</a> to go home</small></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% include "alerts.html" %}
+
+
+{% endblock %}
