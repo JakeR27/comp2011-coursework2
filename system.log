@@ -1,1287 +1,162 @@
 WARNING:werkzeug: * Running on all addresses.
    WARNING: This is a development server. Do not use it in a production deployment.
 INFO:werkzeug: * Running on http://192.168.0.47:5000/ (Press CTRL+C to quit)
-ERROR:root:NO ROUTE FOR /.env
-INFO:werkzeug:109.237.103.123 - - [10/Dec/2021 16:27:37] "[33mGET /.env HTTP/1.1[0m" 404 -
-"user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE assessment_task (
-	id INTEGER NOT NULL, 
-	module VARCHAR(10), 
-	deadline DATETIME, 
-	complete BOOLEAN, 
-	title VARCHAR(100), 
-	description VARCHAR(1000), 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00082s] ()
-INFO:sqlalchemy.engine.Engine:CREATE INDEX ix_assessment_task_module ON assessment_task (module)
-INFO:sqlalchemy.engine.Engine:[no key 0.00067s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user (
-	id INTEGER NOT NULL, 
-	username VARCHAR(100), 
-	password VARCHAR(100) NOT NULL, 
-	PRIMARY KEY (id), 
-	UNIQUE (username)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00299s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00165s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00307s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_settings (
-	id INTEGER NOT NULL, 
-	name VARCHAR(1000), 
-	theme VARCHAR(20), 
-	user_id INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00528s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_data (
-	user_id INTEGER NOT NULL, 
-	game_setup INTEGER NOT NULL, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00374s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product_produce (
-	id INTEGER NOT NULL, 
-	animal_id INTEGER, 
-	animal_product_id INTEGER, 
-	production_rate FLOAT NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00252s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_products (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_product_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00249s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_animals (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00253s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_game_data (
-	user_id INTEGER NOT NULL, 
-	coins INTEGER, 
-	product_last_collected DATETIME, 
-	farm_screenshot VARCHAR, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00145s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.id = ?
+INFO:sqlalchemy.engine.Engine:[generated in 0.00030s] (3,)
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[generated in 0.00027s] ('new', 1, 0)
+INFO:sqlalchemy.engine.Engine:SELECT user_settings.id AS user_settings_id, user_settings.name AS user_settings_name, user_settings.theme AS user_settings_theme, user_settings.user_id AS user_settings_user_id 
+FROM user_settings 
+WHERE user_settings.user_id = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[generated in 0.00026s] (3, 1, 0)
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:24] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:24] "GET /static/css/base.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:24] "GET /static/css/bootstrap.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:24] "GET /static/css/light.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:24] "GET /static/media/icon/placeholder-16x16.png HTTP/1.1" 200 -
 INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
 INFO:sqlalchemy.engine.Engine:SELECT user_game_data.user_id AS user_game_data_user_id, user_game_data.coins AS user_game_data_coins, user_game_data.product_last_collected AS user_game_data_product_last_collected, user_game_data.farm_screenshot AS user_game_data_farm_screenshot 
 FROM user_game_data
-INFO:sqlalchemy.engine.Engine:[generated in 0.00072s] ()
+INFO:sqlalchemy.engine.Engine:[generated in 0.00022s] ()
 INFO:sqlalchemy.engine.Engine:COMMIT
 INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_game_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00035s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_animals
-INFO:sqlalchemy.engine.Engine:[no key 0.00063s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_products
-INFO:sqlalchemy.engine.Engine:[no key 0.00095s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product_produce
-INFO:sqlalchemy.engine.Engine:[no key 0.00094s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00096s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_settings
-INFO:sqlalchemy.engine.Engine:[no key 0.00108s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product
-INFO:sqlalchemy.engine.Engine:[no key 0.00112s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal
-INFO:sqlalchemy.engine.Engine:[no key 0.00097s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user
-INFO:sqlalchemy.engine.Engine:[no key 0.00393s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE assessment_task
-INFO:sqlalchemy.engine.Engine:[no key 0.00134s] ()
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.id = ?
+INFO:sqlalchemy.engine.Engine:[cached since 2.155s ago] (3,)
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[cached since 2.153s ago] ('new', 1, 0)
+INFO:sqlalchemy.engine.Engine:SELECT user_settings.id AS user_settings_id, user_settings.name AS user_settings_name, user_settings.theme AS user_settings_theme, user_settings.user_id AS user_settings_user_id 
+FROM user_settings 
+WHERE user_settings.user_id = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[cached since 2.153s ago] (3, 1, 0)
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password, user_settings.id AS user_settings_id, user_settings.name AS user_settings_name, user_settings.theme AS user_settings_theme, user_settings.user_id AS user_settings_user_id 
+FROM user, user_settings
+INFO:sqlalchemy.engine.Engine:[generated in 0.00025s] ()
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:26] "GET /explore HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:26] "GET /static/css/base.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:26] "GET /static/css/bootstrap.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:26] "GET /static/css/explore/explore.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:26] "GET /static/css/light.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:26] "GET /static/media/icon/placeholder-16x16.png HTTP/1.1" 200 -
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.id = ?
+INFO:sqlalchemy.engine.Engine:[cached since 9.23s ago] (3,)
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[cached since 9.229s ago] ('new', 1, 0)
+INFO:sqlalchemy.engine.Engine:SELECT user_settings.id AS user_settings_id, user_settings.name AS user_settings_name, user_settings.theme AS user_settings_theme, user_settings.user_id AS user_settings_user_id 
+FROM user_settings 
+WHERE user_settings.user_id = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[cached since 9.228s ago] (3, 1, 0)
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:33] "GET /help HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:33] "GET /static/css/base.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:33] "GET /static/css/bootstrap.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:33] "GET /static/css/light.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:33] "GET /static/media/icon/placeholder-16x16.png HTTP/1.1" 200 -
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:SELECT user_game_data.user_id AS user_game_data_user_id, user_game_data.coins AS user_game_data_coins, user_game_data.product_last_collected AS user_game_data_product_last_collected, user_game_data.farm_screenshot AS user_game_data_farm_screenshot 
+FROM user_game_data
+INFO:sqlalchemy.engine.Engine:[cached since 8.282s ago] ()
 INFO:sqlalchemy.engine.Engine:COMMIT
 INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE assessment_task (
-	id INTEGER NOT NULL, 
-	module VARCHAR(10), 
-	deadline DATETIME, 
-	complete BOOLEAN, 
-	title VARCHAR(100), 
-	description VARCHAR(1000), 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00070s] ()
-INFO:sqlalchemy.engine.Engine:CREATE INDEX ix_assessment_task_module ON assessment_task (module)
-INFO:sqlalchemy.engine.Engine:[no key 0.00292s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user (
-	id INTEGER NOT NULL, 
-	username VARCHAR(100), 
-	password VARCHAR(100) NOT NULL, 
-	PRIMARY KEY (id), 
-	UNIQUE (username)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00175s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00093s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00372s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_settings (
-	id INTEGER NOT NULL, 
-	name VARCHAR(1000), 
-	theme VARCHAR(20), 
-	user_id INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00346s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_data (
-	user_id INTEGER NOT NULL, 
-	game_setup INTEGER NOT NULL, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00087s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product_produce (
-	id INTEGER NOT NULL, 
-	animal_id INTEGER, 
-	animal_product_id INTEGER, 
-	production_rate FLOAT NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00295s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_products (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_product_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00282s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_animals (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00305s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_game_data (
-	user_id INTEGER NOT NULL, 
-	coins INTEGER, 
-	product_last_collected DATETIME, 
-	farm_screenshot VARCHAR, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00339s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.id = ?
+INFO:sqlalchemy.engine.Engine:[cached since 10.44s ago] (3,)
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[cached since 10.43s ago] ('new', 1, 0)
+INFO:sqlalchemy.engine.Engine:SELECT user_settings.id AS user_settings_id, user_settings.name AS user_settings_name, user_settings.theme AS user_settings_theme, user_settings.user_id AS user_settings_user_id 
+FROM user_settings 
+WHERE user_settings.user_id = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[cached since 10.43s ago] (3, 1, 0)
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password, user_settings.id AS user_settings_id, user_settings.name AS user_settings_name, user_settings.theme AS user_settings_theme, user_settings.user_id AS user_settings_user_id 
+FROM user, user_settings
+INFO:sqlalchemy.engine.Engine:[cached since 8.281s ago] ()
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:34] "GET /explore HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/css/base.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/css/bootstrap.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/css/explore/explore.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/css/light.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/icon/placeholder-16x16.png HTTP/1.1[0m" 304 -
 INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_game_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00132s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_animals
-INFO:sqlalchemy.engine.Engine:[no key 0.00115s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_products
-INFO:sqlalchemy.engine.Engine:[no key 0.00081s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product_produce
-INFO:sqlalchemy.engine.Engine:[no key 0.00084s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00073s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_settings
-INFO:sqlalchemy.engine.Engine:[no key 0.00110s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product
-INFO:sqlalchemy.engine.Engine:[no key 0.00150s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal
-INFO:sqlalchemy.engine.Engine:[no key 0.00140s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user
-INFO:sqlalchemy.engine.Engine:[no key 0.00140s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE assessment_task
-INFO:sqlalchemy.engine.Engine:[no key 0.00173s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
-INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE assessment_task (
-	id INTEGER NOT NULL, 
-	module VARCHAR(10), 
-	deadline DATETIME, 
-	complete BOOLEAN, 
-	title VARCHAR(100), 
-	description VARCHAR(1000), 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00119s] ()
-INFO:sqlalchemy.engine.Engine:CREATE INDEX ix_assessment_task_module ON assessment_task (module)
-INFO:sqlalchemy.engine.Engine:[no key 0.00128s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user (
-	id INTEGER NOT NULL, 
-	username VARCHAR(100), 
-	password VARCHAR(100) NOT NULL, 
-	PRIMARY KEY (id), 
-	UNIQUE (username)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00261s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00101s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00173s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_settings (
-	id INTEGER NOT NULL, 
-	name VARCHAR(1000), 
-	theme VARCHAR(20), 
-	user_id INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00823s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_data (
-	user_id INTEGER NOT NULL, 
-	game_setup INTEGER NOT NULL, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00302s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product_produce (
-	id INTEGER NOT NULL, 
-	animal_id INTEGER, 
-	animal_product_id INTEGER, 
-	production_rate FLOAT NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00191s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_products (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_product_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00116s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_animals (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00116s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_game_data (
-	user_id INTEGER NOT NULL, 
-	coins INTEGER, 
-	product_last_collected DATETIME, 
-	farm_screenshot VARCHAR, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00138s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
-INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_game_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00102s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_animals
-INFO:sqlalchemy.engine.Engine:[no key 0.00063s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_products
-INFO:sqlalchemy.engine.Engine:[no key 0.00069s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product_produce
-INFO:sqlalchemy.engine.Engine:[no key 0.00179s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00060s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_settings
-INFO:sqlalchemy.engine.Engine:[no key 0.00070s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product
-INFO:sqlalchemy.engine.Engine:[no key 0.00081s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal
-INFO:sqlalchemy.engine.Engine:[no key 0.00225s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user
-INFO:sqlalchemy.engine.Engine:[no key 0.00192s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE assessment_task
-INFO:sqlalchemy.engine.Engine:[no key 0.00207s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
-INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE assessment_task (
-	id INTEGER NOT NULL, 
-	module VARCHAR(10), 
-	deadline DATETIME, 
-	complete BOOLEAN, 
-	title VARCHAR(100), 
-	description VARCHAR(1000), 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00074s] ()
-INFO:sqlalchemy.engine.Engine:CREATE INDEX ix_assessment_task_module ON assessment_task (module)
-INFO:sqlalchemy.engine.Engine:[no key 0.00071s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user (
-	id INTEGER NOT NULL, 
-	username VARCHAR(100), 
-	password VARCHAR(100) NOT NULL, 
-	PRIMARY KEY (id), 
-	UNIQUE (username)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00106s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00099s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00218s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_settings (
-	id INTEGER NOT NULL, 
-	name VARCHAR(1000), 
-	theme VARCHAR(20), 
-	user_id INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00238s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_data (
-	user_id INTEGER NOT NULL, 
-	game_setup INTEGER NOT NULL, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00280s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product_produce (
-	id INTEGER NOT NULL, 
-	animal_id INTEGER, 
-	animal_product_id INTEGER, 
-	production_rate FLOAT NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00117s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_products (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_product_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00176s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_animals (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00122s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_game_data (
-	user_id INTEGER NOT NULL, 
-	coins INTEGER, 
-	product_last_collected DATETIME, 
-	farm_screenshot VARCHAR, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00093s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
-INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_game_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00044s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_animals
-INFO:sqlalchemy.engine.Engine:[no key 0.00287s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_products
-INFO:sqlalchemy.engine.Engine:[no key 0.00197s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product_produce
-INFO:sqlalchemy.engine.Engine:[no key 0.00105s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00121s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_settings
-INFO:sqlalchemy.engine.Engine:[no key 0.00210s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product
-INFO:sqlalchemy.engine.Engine:[no key 0.00067s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal
-INFO:sqlalchemy.engine.Engine:[no key 0.00116s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user
-INFO:sqlalchemy.engine.Engine:[no key 0.01037s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE assessment_task
-INFO:sqlalchemy.engine.Engine:[no key 0.00175s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
-INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE assessment_task (
-	id INTEGER NOT NULL, 
-	module VARCHAR(10), 
-	deadline DATETIME, 
-	complete BOOLEAN, 
-	title VARCHAR(100), 
-	description VARCHAR(1000), 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00260s] ()
-INFO:sqlalchemy.engine.Engine:CREATE INDEX ix_assessment_task_module ON assessment_task (module)
-INFO:sqlalchemy.engine.Engine:[no key 0.00068s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user (
-	id INTEGER NOT NULL, 
-	username VARCHAR(100), 
-	password VARCHAR(100) NOT NULL, 
-	PRIMARY KEY (id), 
-	UNIQUE (username)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00281s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00458s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00094s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_settings (
-	id INTEGER NOT NULL, 
-	name VARCHAR(1000), 
-	theme VARCHAR(20), 
-	user_id INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00631s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_data (
-	user_id INTEGER NOT NULL, 
-	game_setup INTEGER NOT NULL, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00099s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product_produce (
-	id INTEGER NOT NULL, 
-	animal_id INTEGER, 
-	animal_product_id INTEGER, 
-	production_rate FLOAT NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00283s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_products (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_product_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00431s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_animals (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00209s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_game_data (
-	user_id INTEGER NOT NULL, 
-	coins INTEGER, 
-	product_last_collected DATETIME, 
-	farm_screenshot VARCHAR, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00409s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
-INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_game_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00081s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_animals
-INFO:sqlalchemy.engine.Engine:[no key 0.00241s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_products
-INFO:sqlalchemy.engine.Engine:[no key 0.00098s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product_produce
-INFO:sqlalchemy.engine.Engine:[no key 0.00095s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00114s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_settings
-INFO:sqlalchemy.engine.Engine:[no key 0.00081s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product
-INFO:sqlalchemy.engine.Engine:[no key 0.00092s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal
-INFO:sqlalchemy.engine.Engine:[no key 0.00108s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user
-INFO:sqlalchemy.engine.Engine:[no key 0.00126s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE assessment_task
-INFO:sqlalchemy.engine.Engine:[no key 0.00074s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
-INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA temp.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE assessment_task (
-	id INTEGER NOT NULL, 
-	module VARCHAR(10), 
-	deadline DATETIME, 
-	complete BOOLEAN, 
-	title VARCHAR(100), 
-	description VARCHAR(1000), 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00095s] ()
-INFO:sqlalchemy.engine.Engine:CREATE INDEX ix_assessment_task_module ON assessment_task (module)
-INFO:sqlalchemy.engine.Engine:[no key 0.00073s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user (
-	id INTEGER NOT NULL, 
-	username VARCHAR(100), 
-	password VARCHAR(100) NOT NULL, 
-	PRIMARY KEY (id), 
-	UNIQUE (username)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00254s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00104s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product (
-	id INTEGER NOT NULL, 
-	name VARCHAR(100), 
-	value INTEGER, 
-	PRIMARY KEY (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00139s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_settings (
-	id INTEGER NOT NULL, 
-	name VARCHAR(1000), 
-	theme VARCHAR(20), 
-	user_id INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00125s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_data (
-	user_id INTEGER NOT NULL, 
-	game_setup INTEGER NOT NULL, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00237s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE animal_product_produce (
-	id INTEGER NOT NULL, 
-	animal_id INTEGER, 
-	animal_product_id INTEGER, 
-	production_rate FLOAT NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00152s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_products (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_product_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_product_id) REFERENCES animal_product (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00262s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_animals (
-	id INTEGER NOT NULL, 
-	user_id INTEGER, 
-	animal_id INTEGER, 
-	quantity INTEGER NOT NULL, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(user_id) REFERENCES user (id), 
-	FOREIGN KEY(animal_id) REFERENCES animal (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00336s] ()
-INFO:sqlalchemy.engine.Engine:
-CREATE TABLE user_game_data (
-	user_id INTEGER NOT NULL, 
-	coins INTEGER, 
-	product_last_collected DATETIME, 
-	farm_screenshot VARCHAR, 
-	PRIMARY KEY (user_id), 
-	FOREIGN KEY(user_id) REFERENCES user (id)
-)
-
-
-INFO:sqlalchemy.engine.Engine:[no key 0.00088s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
-INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:INSERT INTO user (username, password) VALUES (?, ?)
-INFO:sqlalchemy.engine.Engine:[generated in 0.00098s] ('un', 'pw')
-INFO:sqlalchemy.engine.Engine:COMMIT
-INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("assessment_task")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_settings")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("animal_product_produce")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_products")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_animals")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("user_game_data")
-INFO:sqlalchemy.engine.Engine:[raw sql] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_game_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00089s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_animals
-INFO:sqlalchemy.engine.Engine:[no key 0.00162s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_products
-INFO:sqlalchemy.engine.Engine:[no key 0.00161s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product_produce
-INFO:sqlalchemy.engine.Engine:[no key 0.00253s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_data
-INFO:sqlalchemy.engine.Engine:[no key 0.00064s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user_settings
-INFO:sqlalchemy.engine.Engine:[no key 0.00065s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal_product
-INFO:sqlalchemy.engine.Engine:[no key 0.00110s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE animal
-INFO:sqlalchemy.engine.Engine:[no key 0.00063s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE user
-INFO:sqlalchemy.engine.Engine:[no key 0.00064s] ()
-INFO:sqlalchemy.engine.Engine:
-DROP TABLE assessment_task
-INFO:sqlalchemy.engine.Engine:[no key 0.00147s] ()
-INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.id = ?
+INFO:sqlalchemy.engine.Engine:[cached since 11.04s ago] (3,)
+INFO:sqlalchemy.engine.Engine:SELECT user_data.user_id AS user_data_user_id, user_data.game_setup AS user_data_game_setup 
+FROM user_data 
+WHERE user_data.user_id = ?
+INFO:sqlalchemy.engine.Engine:[generated in 0.00026s] (3,)
+INFO:sqlalchemy.engine.Engine:SELECT animal.id AS animal_id, animal.name AS animal_name, animal.value AS animal_value 
+FROM animal
+INFO:sqlalchemy.engine.Engine:[generated in 0.00020s] ()
+INFO:sqlalchemy.engine.Engine:SELECT name, quantity, value FROM user_products, animal_product WHERE user_products.animal_product_id = animal_product.id AND user_products.user_id = ?
+INFO:sqlalchemy.engine.Engine:[generated in 0.00019s] (3,)
+INFO:sqlalchemy.engine.Engine:SELECT name, quantity, value FROM user_animals, animal WHERE user_animals.animal_id = animal.id AND user_animals.user_id = ?
+INFO:sqlalchemy.engine.Engine:[generated in 0.00020s] (3,)
+INFO:sqlalchemy.engine.Engine:SELECT user.id AS user_id, user.username AS user_username, user.password AS user_password 
+FROM user 
+WHERE user.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[cached since 11.05s ago] ('new', 1, 0)
+INFO:sqlalchemy.engine.Engine:SELECT user_settings.id AS user_settings_id, user_settings.name AS user_settings_name, user_settings.theme AS user_settings_theme, user_settings.user_id AS user_settings_user_id 
+FROM user_settings 
+WHERE user_settings.user_id = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:[cached since 11.06s ago] (3, 1, 0)
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /play HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/css/base.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/css/bootstrap.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/css/play/play.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/js/play/canvas.js HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/css/light.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/js/p5.min.js HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/js/play/game.js HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/js/play/animals.js HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/js/play/connection.js HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/js/play/moneyManager.js HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/js/play/dom_handler.js HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/icon/placeholder-16x16.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/media/img/animals/chicken_walk.png HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/media/img/animals/cow_walk.png HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/media/img/animals/chicken_eat.png HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/media/img/animals/cow_eat.png HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/media/img/animals/pig_walk.png HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/media/img/animals/pig_eat.png HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/media/img/animals/sheep_walk.png HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/media/img/animals/sheep_eat.png HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "GET /static/media/Roboto-Medium.ttf HTTP/1.1" 200 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/img/animals/chicken_walk.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/img/animals/cow_walk.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/img/animals/chicken_eat.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/img/animals/pig_walk.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/img/animals/cow_eat.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/img/animals/pig_eat.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/img/animals/sheep_walk.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:192.168.0.47 - - [10/Dec/2021 16:41:35] "[36mGET /static/media/img/animals/sheep_eat.png HTTP/1.1[0m" 304 -
