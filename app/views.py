@@ -291,7 +291,7 @@ def play():
 @app.route("/explore", methods=["GET"])
 def explore():
     accounts = models.UserGameData.query.all()
-    accounts = db.session.query(models.User, models.UserSettings, )
+    #accounts = db.session.query(models.User, models.UserSettings, )
     db.session.commit()
 
     return render_template("game/explore.html",
