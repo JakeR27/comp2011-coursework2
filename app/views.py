@@ -2,7 +2,7 @@ import json
 from flask import render_template, request, redirect, flash, abort, session
 from flask_login import login_user, login_required, current_user, logout_user
 from app import app, db, models
-from app.forms import LoginForm, RegisterForm, UserSettingsForm, GameAnimalCommandForm
+from app.forms import LoginForm, RegisterForm, UserSettingsForm, GameAnimalCommandForm, ChangePasswordForm
 from app.utils import is_safe_url, get_user_settings, dbresult_to_list, db_api_execute
 from app.game.gameSetup import setupGame
 import hashlib
@@ -291,6 +291,7 @@ def play():
 @app.route("/explore", methods=["GET"])
 def explore():
     accounts = models.UserGameData.query.all()
+    accounts = db.session.query(models.User, models.UserSettings, )
     db.session.commit()
 
     return render_template("game/explore.html",
@@ -302,6 +303,66 @@ def explore():
                            custom_css="explore/explore",
                            accounts=accounts), 200
 
+
+@app.route("/changepassword", methods=["GET"])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+
+    return render_template("change_password.html",
+                           title="Change password",
+                           current_path="/changepassword",
+                           dev=False,
+                           user=current_user,
+                           user_settings=get_user_settings(),
+                           form=form
+                           ), 200
+
+
+@app.route("/changepassword", methods=["POST"])
+@login_required
+def change_password_post():
+    form = ChangePasswordForm()
+
+    if form.is_submitted():
+
+        hashed_old_password_input = hashlib.sha256(
+            (form.old_password.data + app.config["SECRET_KEY"]).encode()).hexdigest()
+        hashed_old_password = models.User.query.get(int(current_user.id)).password
+
+        valid = True
+        if (form.new_password.data != form.new_password2.data) or (hashed_old_password_input != hashed_old_password):
+            logging.warning("Incorrect data provided to change password")
+            flash("Something went wrong, please try again!", "danger")
+            valid = False
+
+        if valid:
+            hashed_password_input = hashlib.sha256(
+                (form.new_password.data + app.config["SECRET_KEY"]).encode()).hexdigest()
+            models.User.query.get(int(current_user.id)).password = hashed_password_input
+
+            flash("Successfully updated!", "success")
+
+        db.session.commit()
+        return render_template("change_password.html",
+                               title="Change password",
+                               current_path="/changepassword",
+                               dev=False,
+                               user=current_user,
+                               user_settings=get_user_settings(),
+                               form=form
+                               ), 200
+
+
+@app.route("/help", methods=["GET"])
+def help():
+    return render_template("game/help.html",
+                           title="Farmanina Help",
+                           current_path="/help",
+                           dev=False,
+                           user=current_user,
+                           user_settings=get_user_settings(),
+                           ), 200
 
 # API ------------------------------------------------------------------
 
@@ -325,7 +386,6 @@ def farm_me_data():
 @app.route("/api/v1/farm/me/animals")
 @login_required
 def farm_me_animals(internal=False):
-
     return db_api_execute("SELECT name, quantity, value "
                           "FROM user_animals, animal "
                           "WHERE user_animals.animal_id = animal.id "
@@ -336,7 +396,6 @@ def farm_me_animals(internal=False):
 @app.route("/api/v1/farm/me/products")
 @login_required
 def farm_me_products(internal=False):
-
     return db_api_execute("SELECT name, quantity, value "
                           "FROM user_products, animal_product "
                           "WHERE user_products.animal_product_id = animal_product.id "
@@ -347,7 +406,6 @@ def farm_me_products(internal=False):
 @app.route("/api/v1/farm/me/extra")
 @login_required
 def farm_me_extra(internal=False):
-
     return db_api_execute("SELECT coins "
                           "FROM user_game_data "
                           "WHERE user_game_data.user_id = :uid", {"uid": current_user.id},
@@ -385,6 +443,9 @@ def farm_me_sold():
 
     quantity = int(quantity)
 
+    animal_price_modifer = 0.5
+    product_price_modifer = 0.01
+
     # if its an animal that was sold
     if len(animal_item):
         animal_entry = models.Animal.query.filter_by(name=item).first()
@@ -392,11 +453,11 @@ def farm_me_sold():
 
         money_made = 0
         if quantity == -1:
-            money_made = db_entry.quantity * animal_entry.value
+            money_made = db_entry.quantity * animal_entry.value * animal_price_modifer
             db_entry.quantity = 0
         else:
             if db_entry.quantity >= 1:
-                money_made = 1 * animal_entry.value
+                money_made = 1 * animal_entry.value * animal_price_modifer
                 db_entry.quantity -= 1
 
         user_extras = models.UserGameData.query.filter_by(user_id=current_user.id).first()
@@ -404,15 +465,16 @@ def farm_me_sold():
 
     if len(product_item):
         product_entry = models.AnimalProduct.query.filter_by(name=item).first()
-        db_entry = models.UserProducts.query.filter_by(user_id=current_user.id, animal_product_id=product_entry.id).first()
+        db_entry = models.UserProducts.query.filter_by(user_id=current_user.id,
+                                                       animal_product_id=product_entry.id).first()
 
         money_made = 0
         if quantity == -1:
-            money_made = db_entry.quantity * product_entry.value
+            money_made = db_entry.quantity * product_entry.value * product_price_modifer
             db_entry.quantity = 0
         else:
             if db_entry.quantity >= 1:
-                money_made = 1 * product_entry.value
+                money_made = 1 * product_entry.value * product_price_modifer
                 db_entry.quantity -= 1
 
         user_extras = models.UserGameData.query.filter_by(user_id=current_user.id).first()
@@ -477,7 +539,8 @@ def farm_me_update_products():
                                       {"uid": current_user.id, "time": time_passed})
 
     for np in new_products:
-        models.UserProducts.query.filter_by(user_id=int(current_user.id), animal_product_id=np[0]).first().quantity += np[
+        models.UserProducts.query.filter_by(user_id=int(current_user.id), animal_product_id=np[0]).first().quantity += \
+        np[
             1]
 
     models.UserGameData.query.filter_by(user_id=int(current_user.id)).first().product_last_collected = ctime

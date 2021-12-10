@@ -26,3 +26,9 @@ class GameAnimalCommandForm(Form):
     animal = SelectField("Animal", validators=[InputRequired()])
     quantity = IntegerField("Quantity", validators=[InputRequired(), NumberRange(min=1)])
     command = SelectField("Order", choices=[("buy", "Buy"), ("sell", "Sell")], validators=[InputRequired()])
+
+
+class ChangePasswordForm(Form):
+    old_password = PasswordField("Old Password", validators=[Length(min=1), InputRequired()])
+    new_password = PasswordField("New Password", validators=[Length(min=1), InputRequired()])
+    new_password2 = PasswordField("New Password", validators=[Length(min=1), InputRequired()])

@@ -1,10 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "basic_center.html" %}
+{% block centered_content %}
 
-</body>
-</html>
+    <div class="text-center">
+        <h1>Let's get started</h1>
+        <p class="lead">This is a little farming game!</p>
+        <p>The idea is to buy as many animals as you can, as quickly as possible</p>
+        <p>You can buy the following items:</p>
+        <ul class="list-unstyled">
+            <li>Chickens for 50 coins each</li>
+            <li>Cows for 120 coins each</li>
+            <li>Pigs for 115 coins each</li>
+            <li>Sheep for 100 coins each</li>
+        </ul>
+        <p>Animals can be sold, if you'd like. However, they are sold for half the price you bought them for!</p>
+        <p>Animals produce products, the type and quantity of products is for you to discover</p>
+        <p>
+            After a minute has passed the animals will have created enough products for you to collect,
+            be careful though, if you try to collect products too early you'll break them and have to
+            start the count down again. Any products made will last for 10 minutes then expire (in
+            other words: the number of products to collect will stack up but only for a maximum of 10
+            minutes)
+        </p>
+        <p>
+            You'll notice that some of the animals turn funny colours, this is because they represent a
+            multiple of that animal. For example, a dark red cow represents 10 normal cows. You will
+            still collect all the products for 10 cows, but only one dark red cow will appear in your
+            farm. This is for your benefit (think of the lag with 1,000,000 cows on your screen). The
+            colour will change with each multiple of 10.
+        </p>
+        <p>
+            Can you find out how many animals you need to get the golden version? Wait, you already know?
+            Okay, the real challenge now is to see how quickly you can get one of animal type in gold
+        </p>
+        <p>Good luck! Press the button below to get started!</p>
+        <a class="btn btn-success" href="/play">Play</a>
+{#        <a href="/login" class="btn btn-primary">Login</a>#}
+{#        <a href="/register" class="btn btn-secondary">Register</a>#}
+    </div>
+
+
+{% endblock %}
